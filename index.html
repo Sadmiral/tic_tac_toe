@@ -107,6 +107,7 @@
         }
         document.rCounter = 0;
         var dTimer = document.getElementById("pBar");
+        dTimer.value = 10;
         dTimer.setAttribute("time", 10 + " s");
         document.timer = setInterval(function() {
           dTimer.value = 10 - ++document.rCounter;
