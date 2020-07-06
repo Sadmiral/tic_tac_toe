@@ -1,14 +1,39 @@
 .Square {
-  width: 25px;
-  height: 25px;
+  border-collapse: collapse;
+  border: 1px solid black;
+  width: 60px;
+  height: 60px;
   text-align: center;
-  font-size: 18pt;
+  font-size: 30px;
   font-weight: bold;
-  font-family: Verdana;
+  font-family: Helvetica;
 }
 
 .turn {
-  font-family: Poor Richard;
+  font-family: Helvetica;
   font-weight: bold;
   font-size: 22;
+}
+
+.board {
+  border-collapse: collapse;
+  border: 1px solid black;
+}
+
+.progress-bar {
+  width: 225px;
+  height: 2em;
+  border-radius: 1em;
+  text-align: center;
+}
+
+.progress-bar::before {
+  content: attr(time);
+  position: absolute;
+  left: 100px;
+  padding: 0.5em;
+  font-family: Helvetica;
+  font-weight: bold;
+  font-size: 10;
+  color: white;
 }

@@ -3,11 +3,21 @@
   <head>
     <meta charset="utf-8" />
     <link href="src/styles.css" rel="stylesheet" type="text/css" />
-
     <script>
       function startGame() {
         document.turn = "x";
         document.winner = null;
+        document.rCounter = 0;
+        document.timer = setInterval(function() {
+          var dTimer = document.getElementById("pBar");
+          dTimer.value = 10 - ++document.rCounter;
+          dTimer.setAttribute("time", dTimer.value + " s");
+          if (dTimer.value <= 0) {
+            clearInterval(document.timer);
+            switchTurn(document.rCounter);
+          }
+        }, 1000);
+
         setTurn(document.turn + " starts the game");
       }
       function setTurn(trn) {
@@ -16,22 +26,39 @@
       function nextMove(square) {
         if (document.winner != null) {
           setTurn("Player " + document.winner + " already won the game.");
-        } else if (square.innerText == "") {
-          square.innerText = document.turn;
-          switchTurn();
+        }
+        if (square.innerText == "") {
+          if (document.turn == "x") {
+            square.innerText = "x";
+            square.style.backgroundColor =
+              "rgb(" + 124 + "," + 252 + "," + 0 + ")";
+            switchTurn();
+          } else if (document.turn == "o") {
+            square.innerText = "o";
+            square.style.backgroundColor =
+              "rgb(" + 250 + "," + 128 + "," + 114 + ")";
+            switchTurn();
+          }
+        } else {
+          setTurn("Select an empty square for your move!");
         }
       }
       function switchTurn() {
         if (checkForWinner(document.turn)) {
           alert("Player " + document.winner + " won!");
-        } else if (document.turn == "x") {
-          document.turn = "o";
-          setTurn("It's " + document.turn + "'s turn!");
         } else {
-          document.turn = "x";
-          setTurn("It's " + document.turn + "'s turn!");
+          if (document.turn == "x") {
+            document.turn = "o";
+            setTurn("It's o's turn!");
+            resetTimer(document.rCounter);
+          } else {
+            document.turn = "x";
+            setTurn("It's x's turn!");
+            resetTimer(document.rCounter);
+          }
         }
       }
+
       function checkRow(a, b, c, d, e, move) {
         var result = false;
         if (
@@ -66,13 +93,29 @@
           checkRow(21, 17, 13, 9, 5, move)
         ) {
           if (move == "x") {
-            document.winner = "1";
+            document.winner = 1;
           } else {
-            document.winner = "2";
+            document.winner = 2;
           }
           result = true;
         }
         return result;
+      }
+      function resetTimer(rC) {
+        if (rC > 0) {
+          clearInterval(document.timer);
+        }
+        document.rCounter = 0;
+        var dTimer = document.getElementById("pBar");
+        dTimer.setAttribute("time", 10 + " s");
+        document.timer = setInterval(function() {
+          dTimer.value = 10 - ++document.rCounter;
+          dTimer.setAttribute("time", dTimer.value + " s");
+          if (dTimer.value <= 0) {
+            clearInterval(document.timer);
+            switchTurn(document.rCounter);
+          }
+        }, 1000);
       }
     </script>
   </head>
@@ -81,7 +124,16 @@
     <h1 class="turn">Tic-Tac-Toe</h1>
     <div class="turn" id="turn"></div>
     <br />
-    <table id="board" border="1">
+    <progress
+      value="10"
+      max="10"
+      id="pBar"
+      class="progress-bar"
+      time="10 s"
+    ></progress>
+    <br />
+    <br />
+    <table id="board" class="board">
       <tr>
         <td id="s1" class="Square" onclick="nextMove(this)"></td>
         <td id="s2" class="Square" onclick="nextMove(this)"></td>
