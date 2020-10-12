@@ -8,7 +8,7 @@
         document.turn = "x";
         document.winner = null;
         document.rCounter = 0;
-        document.timer = setInterval(function() {
+        document.timer = setInterval(function () {
           var dTimer = document.getElementById("pBar");
           dTimer.value = 10 - ++document.rCounter;
           dTimer.setAttribute("time", dTimer.value + " s");
@@ -102,21 +102,27 @@
         return result;
       }
       function resetTimer(rC) {
-        if (rC > 0) {
-          clearInterval(document.timer);
-        }
-        document.rCounter = 0;
-        var dTimer = document.getElementById("pBar");
-        dTimer.value = 10;
-        dTimer.setAttribute("time", 10 + " s");
-        document.timer = setInterval(function() {
+        if (rC == 10) {
+          document.rCounter = 0;
+          var dTimer = document.getElementById("pBar");
           dTimer.value = 10 - ++document.rCounter;
-          dTimer.setAttribute("time", dTimer.value + " s");
-          if (dTimer.value <= 0) {
-            clearInterval(document.timer);
-            switchTurn(document.rCounter);
-          }
-        }, 1000);
+          dTimer.setAttribute("time", 10 + " s");
+          document.timer = setInterval(function () {
+            dTimer.value = 10 - ++document.rCounter;
+            dTimer.setAttribute("time", dTimer.value + " s");
+            if (dTimer.value <= 0) {
+              clearInterval(document.timer);
+              switchTurn(document.rCounter);
+            }
+          }, 1000);
+          return;
+        }
+        document.rCounter = -1;
+        var dTimer = document.getElementById("pBar");
+        dTimer.value = 10 - ++document.rCounter;
+        dTimer.setAttribute("time", 10 + " s");
+
+        /* */
       }
     </script>
   </head>
